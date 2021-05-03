@@ -30,8 +30,10 @@ class OrderView(APIView):
         serializer = OrderSerializer(instance=order, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):
         order= Order.objects.get(pk=kwargs.get('pk'))
-        order.delete
+        order.status = 2
+        order.save
         return Response(data={'message': 'Order successfull deleted'})
